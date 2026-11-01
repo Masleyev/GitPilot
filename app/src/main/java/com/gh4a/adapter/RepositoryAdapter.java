@@ -49,9 +49,23 @@ public class RepositoryAdapter extends RootAdapter<Repository, RepositoryAdapter
     public void onBindViewHolder(ViewHolder holder, Repository repository) {
         holder.tvTitle.setText(ApiHelpers.formatRepoName(mContext, repository));
 
-        if (!StringUtils.isBlank(repository.description())) {
+        String desc = repository.description();
+        if (!StringUtils.isBlank(desc)) {
             holder.tvDesc.setVisibility(View.VISIBLE);
-            holder.tvDesc.setText(EmojiParser.parseToUnicode(repository.description()));
+            String cached = com.gh4a.utils.TranslatorUtils.getCached(desc);
+            if (cached != null) {
+                holder.tvDesc.setText(EmojiParser.parseToUnicode(cached));
+            } else {
+                holder.tvDesc.setText(EmojiParser.parseToUnicode(desc));
+                holder.tvDesc.setTag(desc);
+                com.gh4a.utils.TranslatorUtils.translateToRussian(desc)
+                        .observeOn(io.reactivex.android.schedulers.AndroidSchedulers.mainThread())
+                        .subscribe(translated -> {
+                            if (desc.equals(holder.tvDesc.getTag())) {
+                                holder.tvDesc.setText(EmojiParser.parseToUnicode(translated));
+                            }
+                        }, err -> {});
+            }
         } else {
             holder.tvDesc.setVisibility(View.GONE);
         }

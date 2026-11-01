@@ -60,4 +60,8 @@ public class Trend {
     public int getForks() {
         return forks;
     }
+
+    public Trend withDescription(String newDescription) {
+        return new Trend(repoOwner, repoName, newDescription, language, stars, newStars, forks);
+    }
 }

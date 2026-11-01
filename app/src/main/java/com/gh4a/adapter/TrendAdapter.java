@@ -56,7 +56,26 @@ public class TrendAdapter extends RootAdapter<Trend, TrendAdapter.ViewHolder> {
         holder.tvTitle.setText(title);
 
         String desc = trend.getDescription();
-        holder.tvDesc.setText(desc != null ? EmojiParser.parseToUnicode(desc) : null);
+        if (!TextUtils.isEmpty(desc)) {
+            holder.tvDesc.setVisibility(View.VISIBLE);
+            String cached = com.gh4a.utils.TranslatorUtils.getCached(desc);
+            if (cached != null) {
+                holder.tvDesc.setText(EmojiParser.parseToUnicode(cached));
+            } else {
+                holder.tvDesc.setText(EmojiParser.parseToUnicode(desc));
+                holder.tvDesc.setTag(desc);
+                com.gh4a.utils.TranslatorUtils.translateToRussian(desc)
+                        .observeOn(io.reactivex.android.schedulers.AndroidSchedulers.mainThread())
+                        .subscribe(translated -> {
+                            if (desc.equals(holder.tvDesc.getTag())) {
+                                holder.tvDesc.setText(EmojiParser.parseToUnicode(translated));
+                            }
+                        }, err -> {});
+            }
+        } else {
+            holder.tvDesc.setText(null);
+            holder.tvDesc.setVisibility(View.GONE);
+        }
 
         String lang = trend.getLanguage();
         if (TextUtils.isEmpty(lang)) {

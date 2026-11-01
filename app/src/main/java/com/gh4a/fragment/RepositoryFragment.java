@@ -331,6 +331,21 @@ public class RepositoryFragment extends LoadingFragmentBase implements
                 view.setText(getString(stringId, text));
             } else {
                 view.setText(EmojiParser.parseToUnicode(text));
+                if (id == R.id.tv_desc) {
+                    String cached = com.gh4a.utils.TranslatorUtils.getCached(text);
+                    if (cached != null) {
+                        view.setText(EmojiParser.parseToUnicode(cached));
+                    } else {
+                        view.setTag(text);
+                        com.gh4a.utils.TranslatorUtils.translateToRussian(text)
+                                .observeOn(io.reactivex.android.schedulers.AndroidSchedulers.mainThread())
+                                .subscribe(translated -> {
+                                    if (text.equals(view.getTag())) {
+                                        view.setText(EmojiParser.parseToUnicode(translated));
+                                    }
+                                }, err -> {});
+                    }
+                }
             }
             view.setVisibility(View.VISIBLE);
         } else {

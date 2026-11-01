@@ -146,7 +146,8 @@ public class SingleFactory {
     public static Single<List<Trend>> loadTrends(String type) {
         return RetrofitHelper.trendService()
                 .getTrends(type)
-                .map(ApiHelpers::throwOnFailure);
+                .map(ApiHelpers::throwOnFailure)
+                .flatMap(TranslatorUtils::translateTrends);
     }
 
     private static class RetrofitHelper {
