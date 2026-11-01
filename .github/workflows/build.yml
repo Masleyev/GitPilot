@@ -43,12 +43,24 @@ jobs:
           name: GitPilot-RU
           path: output/GitPilot-RU.apk
 
+      - name: Publish APK to direct download branch
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -B apk-download
+          git add -f output/GitPilot-RU.apk
+          git commit -m "release: build GitPilot-RU.apk"
+          git push -f origin apk-download
+
       - name: Create or Update GitHub Release
         if: github.ref == 'refs/heads/main'
+        continue-on-error: true
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.0-ru
+          name: "GitPilot-RU v1.0.0"
+          body: "Русифицированная версия GitPilot для Android. Собрано через GitHub Actions."
+          files: output/GitPilot-RU.apk
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh release create v1.0.0-ru output/GitPilot-RU.apk \
-            --title "GitPilot-RU v1.0.0" \
-            --notes "Русифицированная версия GitPilot для Android. Собрано через GitHub Actions." \
-            --clobber
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
