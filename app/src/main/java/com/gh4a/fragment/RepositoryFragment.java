@@ -100,6 +100,11 @@ public class RepositoryFragment extends LoadingFragmentBase implements
     private TextView mReadmeView;
     private View mLoadingView;
     private TextView mReadmeTitleView;
+    private TextView mTranslateReadmeButton;
+    private String mOriginalReadmeHtml;
+    private String mTranslatedReadmeHtml;
+    private boolean mIsShowingTranslation = false;
+    private boolean mIsTranslating = false;
     private Boolean mIsWatching = null;
     private Boolean mIsStarring = null;
     private boolean mIsReadmeLoaded = false;
@@ -118,6 +123,10 @@ public class RepositoryFragment extends LoadingFragmentBase implements
         mReadmeView = mContentView.findViewById(R.id.readme);
         mLoadingView = mContentView.findViewById(R.id.pb_readme);
         mReadmeTitleView = mContentView.findViewById(R.id.readme_title);
+        mTranslateReadmeButton = mContentView.findViewById(R.id.btn_translate_readme);
+        if (mTranslateReadmeButton != null) {
+            mTranslateReadmeButton.setOnClickListener(v -> toggleReadmeTranslation());
+        }
         return mContentView;
     }
 
@@ -393,9 +402,72 @@ public class RepositoryFragment extends LoadingFragmentBase implements
         mReadmeView.setVisibility(mIsReadmeExpanded && mIsReadmeLoaded ? View.VISIBLE : View.GONE);
         mLoadingView.setVisibility(
                 mIsReadmeExpanded && !mIsReadmeLoaded ? View.VISIBLE : View.GONE);
+        if (mTranslateReadmeButton != null) {
+            mTranslateReadmeButton.setVisibility(
+                    mIsReadmeExpanded && mIsReadmeLoaded && mOriginalReadmeHtml != null
+                            ? View.VISIBLE : View.GONE);
+            mTranslateReadmeButton.setText(mIsShowingTranslation
+                    ? R.string.show_original_readme : R.string.translate_readme);
+        }
 
         int drawableRes = mIsReadmeExpanded ? R.drawable.drop_up_arrow : R.drawable.drop_down_arrow;
         mReadmeTitleView.setCompoundDrawablesWithIntrinsicBounds(0, 0, drawableRes, 0);
+    }
+
+    private void toggleReadmeTranslation() {
+        if (mOriginalReadmeHtml == null || mIsTranslating || !isAdded()) {
+            return;
+        }
+
+        if (mIsShowingTranslation) {
+            mIsShowingTranslation = false;
+            if (mImageGetter != null && mRepository != null) {
+                mImageGetter.bind(mReadmeView, mOriginalReadmeHtml, mRepository.id());
+            }
+            updateReadmeVisibility();
+            return;
+        }
+
+        if (mTranslatedReadmeHtml != null) {
+            mIsShowingTranslation = true;
+            if (mImageGetter != null && mRepository != null) {
+                mImageGetter.bind(mReadmeView, mTranslatedReadmeHtml, mRepository.id());
+            }
+            updateReadmeVisibility();
+            return;
+        }
+
+        mIsTranslating = true;
+        if (mTranslateReadmeButton != null) {
+            mTranslateReadmeButton.setText(R.string.translating_readme);
+            mTranslateReadmeButton.setEnabled(false);
+        }
+
+        com.gh4a.utils.TranslatorUtils.translateToRussian(mOriginalReadmeHtml)
+                .observeOn(io.reactivex.android.schedulers.AndroidSchedulers.mainThread())
+                .subscribe(translatedHtml -> {
+                    mIsTranslating = false;
+                    mTranslatedReadmeHtml = translatedHtml;
+                    mIsShowingTranslation = true;
+                    if (mTranslateReadmeButton != null) {
+                        mTranslateReadmeButton.setEnabled(true);
+                    }
+                    if (isAdded() && mImageGetter != null && mRepository != null) {
+                        Context context = getActivity();
+                        mImageGetter.encode(context, mRepository.id(), mTranslatedReadmeHtml);
+                        mImageGetter.bind(mReadmeView, mTranslatedReadmeHtml, mRepository.id());
+                    }
+                    updateReadmeVisibility();
+                }, error -> {
+                    mIsTranslating = false;
+                    if (mTranslateReadmeButton != null) {
+                        mTranslateReadmeButton.setEnabled(true);
+                    }
+                    updateReadmeVisibility();
+                    if (getContext() != null) {
+                        android.widget.Toast.makeText(getContext(), R.string.translation_failed, android.widget.Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
 
@@ -426,8 +498,14 @@ public class RepositoryFragment extends LoadingFragmentBase implements
                 })
                 .subscribe(readmeOpt -> {
                     if (readmeOpt.isPresent()) {
-                        mImageGetter.bind(mReadmeView, readmeOpt.get(), id);
+                        mOriginalReadmeHtml = readmeOpt.get();
+                        mTranslatedReadmeHtml = null;
+                        mIsShowingTranslation = false;
+                        mImageGetter.bind(mReadmeView, mOriginalReadmeHtml, id);
                     } else {
+                        mOriginalReadmeHtml = null;
+                        mTranslatedReadmeHtml = null;
+                        mIsShowingTranslation = false;
                         mReadmeView.setText(R.string.repo_no_readme);
                         mReadmeView.setTypeface(Typeface.DEFAULT, Typeface.ITALIC);
                     }

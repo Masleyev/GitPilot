@@ -424,4 +424,10 @@
     <string name="use_custom_tabs">Использовать встроенный браузер</string>
     <string name="open_links_inside_app">Открывать ссылки внутри приложения</string>
     <string name="open_links_external_browser">Открывать ссылки во внешнем браузере</string>
+
+    <!-- Readme Translation -->
+    <string name="translate_readme">Перевести на русский</string>
+    <string name="translating_readme">Перевод\u2026</string>
+    <string name="show_original_readme">Показать оригинал</string>
+    <string name="translation_failed">Не удалось перевести</string>
 </resources>

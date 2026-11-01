@@ -641,4 +641,10 @@
     <string name="use_custom_tabs">Use built-in browser</string>
     <string name="open_links_inside_app">Open links inside the app</string>
     <string name="open_links_external_browser">Open links in an external browser</string>
+
+    <!-- Readme Translation -->
+    <string name="translate_readme">Translate to Russian</string>
+    <string name="translating_readme">Translating\u2026</string>
+    <string name="show_original_readme">Show original</string>
+    <string name="translation_failed">Translation failed</string>
 </resources>
