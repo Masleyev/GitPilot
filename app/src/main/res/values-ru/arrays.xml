@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="theme_items">
+        <item>@string/theme_light</item>
+        <item>@string/theme_dark</item>
+    </string-array>
+    <string-array name="text_size_items">
+        <item>Самый мелкий</item>
+        <item>Мелкий</item>
+        <item>Обычный</item>
+        <item>Крупный</item>
+        <item>Самый крупный</item>
+    </string-array>
+    <string-array name="load_gif_mode_items">
+        <item>Не загружать</item>
+        <item>Только по Wi-Fi</item>
+        <item>Загружать всегда</item>
+    </string-array>
+    <string-array name="filter_participating">
+        <item>Все</item>
+        <item>Участвую</item>
+        <item>Не участвую</item>
+    </string-array>
+    <string-array name="notification_interval_items">
+        <item>15 минут</item>
+        <item>20 минут</item>
+        <item>30 минут</item>
+        <item>1 час</item>
+        <item>2 часа</item>
+        <item>3 часа</item>
+        <item>6 часов</item>
+    </string-array>
+</resources>

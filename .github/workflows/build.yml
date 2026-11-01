@@ -1,0 +1,54 @@
+name: Build and Release GitPilot-RU
+
+on:
+  push:
+    branches:
+      - main
+      - 'gitpilot-ru*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build GitPilot APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'gradle'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug --no-daemon --stacktrace
+
+      - name: Prepare APK Artifact
+        run: |
+          mkdir -p output
+          cp app/build/outputs/apk/debug/app-debug.apk output/GitPilot-RU.apk
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: GitPilot-RU
+          path: output/GitPilot-RU.apk
+
+      - name: Create or Update GitHub Release
+        if: github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create v1.0.0-ru output/GitPilot-RU.apk \
+            --title "GitPilot-RU v1.0.0" \
+            --notes "Русифицированная версия GitPilot для Android. Собрано через GitHub Actions." \
+            --clobber

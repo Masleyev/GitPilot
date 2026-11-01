@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="issue">
+        <item quantity="one">%d задача</item>
+        <item quantity="few">%d задачи</item>
+        <item quantity="many">%d задач</item>
+        <item quantity="other">%d задач</item>
+    </plurals>
+
+    <plurals name="pull_request">
+        <item quantity="one">%d пулл-реквест</item>
+        <item quantity="few">%d пулл-реквеста</item>
+        <item quantity="many">%d пулл-реквестов</item>
+        <item quantity="other">%d пулл-реквестов</item>
+    </plurals>
+
+    <plurals name="star">
+        <item quantity="one">%d звезда</item>
+        <item quantity="few">%d звезды</item>
+        <item quantity="many">%d звёзд</item>
+        <item quantity="other">%d звёзд</item>
+    </plurals>
+
+    <plurals name="fork">
+        <item quantity="one">%d форк</item>
+        <item quantity="few">%d форка</item>
+        <item quantity="many">%d форков</item>
+        <item quantity="other">%d форков</item>
+    </plurals>
+
+    <plurals name="follower">
+        <item quantity="one">Подписан 1 пользователь</item>
+        <item quantity="few">Подписано %d пользователя</item>
+        <item quantity="many">Подписано %d пользователей</item>
+        <item quantity="other">Подписано %d пользователей</item>
+    </plurals>
+
+    <plurals name="follower_and_self">
+        <item quantity="one">Подписаны вы и ещё 1 пользователь</item>
+        <item quantity="few">Подписаны вы и ещё %d пользователя</item>
+        <item quantity="many">Подписаны вы и ещё %d пользователей</item>
+        <item quantity="other">Подписаны вы и ещё %d пользователей</item>
+    </plurals>
+
+    <plurals name="following">
+        <item quantity="one">Подписок: 1 пользователь</item>
+        <item quantity="few">Подписок: %d пользователя</item>
+        <item quantity="many">Подписок: %d пользователей</item>
+        <item quantity="other">Подписок: %d пользователей</item>
+    </plurals>
+
+    <plurals name="gist">
+        <item quantity="one">%d gist</item>
+        <item quantity="few">%d gist</item>
+        <item quantity="many">%d gists</item>
+        <item quantity="other">%d gists</item>
+    </plurals>
+
+    <plurals name="member">
+        <item quantity="one">%d участник</item>
+        <item quantity="few">%d участника</item>
+        <item quantity="many">%d участников</item>
+        <item quantity="other">%d участников</item>
+    </plurals>
+
+    <plurals name="repository">
+        <item quantity="one">%d репозиторий</item>
+        <item quantity="few">%d репозитория</item>
+        <item quantity="many">%d репозиториев</item>
+        <item quantity="other">%d репозиториев</item>
+    </plurals>
+
+    <plurals name="watcher">
+        <item quantity="one">%d наблюдатель</item>
+        <item quantity="few">%d наблюдателя</item>
+        <item quantity="many">%d наблюдателей</item>
+        <item quantity="other">%d наблюдателей</item>
+    </plurals>
+
+    <plurals name="page">
+        <item quantity="one">%d страница</item>
+        <item quantity="few">%d страницы</item>
+        <item quantity="many">%d страниц</item>
+        <item quantity="other">%d страниц</item>
+    </plurals>
+
+    <plurals name="contributor_extra_data">
+        <item quantity="one">%1$d контрибуция</item>
+        <item quantity="few">%1$d контрибуции</item>
+        <item quantity="many">%1$d контрибуций</item>
+        <item quantity="other">%1$d контрибуций</item>
+    </plurals>
+
+    <plurals name="checks_summary">
+        <item quantity="one">%1$s проверка</item>
+        <item quantity="few">%1$s проверки</item>
+        <item quantity="many">%1$s проверок</item>
+        <item quantity="other">%1$s проверок</item>
+    </plurals>
+
+    <plurals name="unread_notifications_summary_text">
+        <item quantity="zero">Нет непрочитанных уведомлений</item>
+        <item quantity="one">%1$d непрочитанное уведомление</item>
+        <item quantity="few">%1$d непрочитанных уведомления</item>
+        <item quantity="many">%1$d непрочитанных уведомлений</item>
+        <item quantity="other">%1$d непрочитанных уведомлений</item>
+    </plurals>
+
+    <plurals name="notification">
+        <item quantity="one">%1$d уведомление</item>
+        <item quantity="few">%1$d уведомления</item>
+        <item quantity="many">%1$d уведомлений</item>
+        <item quantity="other">%1$d уведомлений</item>
+    </plurals>
+</resources>
